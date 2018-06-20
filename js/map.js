@@ -170,6 +170,16 @@ var getMapPinsElements = function () {
   renderCardFragment(adverts[index]);
 };
 
+pinElements.addEventListener('click', function (evt) {
+  getMapPinsElements();
+});
+
+pinElements.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    getMapPinsElements();
+  }
+});
+
 // закрытие карточки объявления
 var popupClose = document.querySelector('.popup__close');
 
@@ -199,7 +209,7 @@ var address = form.querySelector('input[name="address"]');
 
 var activatePage = function () {
   fillAddress();
-  getMapPinsElements();
+  renderPinFragment()
   initForm();
   userMap.classList.remove('map--faded');
 };
