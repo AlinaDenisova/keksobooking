@@ -71,7 +71,7 @@ var randomAdverts = function (advertCount) {
         description: '',
         photos: getRandomMixArray(PHOTOS)
       },
-
+      data: i,
       location: {
         x: locationX,
         y: locationY
@@ -95,6 +95,7 @@ var renderPin = function (mapPin) {
   pinElement.style = 'left: ' + (mapPin.location.x - 0.5 * PIN_WIDTH) + 'px; top: ' + (mapPin.location.y - PIN_HEIGHT) + 'px;';
   pinElement.querySelector('img').src = mapPin.author.avatar;
   pinElement.querySelector('img').alt = mapPin.offer.title;
+  pinElement.setAttribute('data-ad-number', mapPin.data);
   return pinElement;
 };
 
@@ -153,68 +154,76 @@ var renderCard = function (mapCard) {
   return cardElement;
 };
 
-var renderCardFragment = function (adverts) {
-  var cardFragment = document.createDocumentFragment();
-  for (var i = 0; i < adverts.length; i++) {
-    cardFragment.appendChild(renderCard(adverts, [i]));
+var renderCardFragment = function (advert) {
+  if (advert) {
+    var cardFragment = document.createDocumentFragment();
+    cardFragment.appendChild(renderCard(advert));
+    userMap.insertBefore(cardFragment, document.querySelector('.map__filter-container'));
   }
-  userMap.insertBefore(cardFragment, document.querySelector('.map__filter-container'));
 };
 
-pinElements.addEventListener('click', function () {
-  renderCardFragment();
+pinElements.addEventListener('click', function (evt) {
+  var target = evt.target;
+  var parentElement = target.parentNode;
+  var index = parentElement.dataset.adNumber;
+
+  renderCardFragment(adverts[index]);
 });
 
-// var popupClose = document.querySelector('.popup__close');
+var popupClose = document.querySelector('.popup__close');
 
-// var closeCard = function () {
-//   var card = userMap.querySelector('.map__card');
-//   if (card) {
-//     card.remove();
-//   }
-// };
+var deletePopup = function () {
+  if (userMap.querySelector('.popup')) {
+    userMap.querySelector('.popup').remove();
+  }
+};
 
-// popupClose.addEventListener('click', function () {
-//   closeCard();
-// });
+if (popupClose) {
+  popupClose.addEventListener('click', function () {
+    deletePopup();
+  });
+}
 
 // активация страницы
 var ESC_KEYCODE = 27;
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 65;
+
 var userMap = document.querySelector('.map');
 var mainPin = document.querySelector('.map__pin--main');
 var form = document.querySelector('.ad-form');
 var fieldsets = document.querySelectorAll('fieldset');
 var address = form.querySelector('input[name="address"]');
 
-var changeStateFieldset = function () {
-  for (var i = 0; i < fieldsets.length; i++) {
-    if (fieldsets.disabled) {
-      fieldsets[i].disabled = false;
-    } else {
-      fieldsets[i].disabled = true;
-    }
-  }
+var disableForm = function () {
+  form.classList.add('ad-form--disabled');
+  fieldsets.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+};
+
+disableForm();
+
+var initForm = function () {
+  form.classList.remove('ad-form--disabled');
+  fieldsets.forEach(function (item) {
+    item.removeAttribute('disabled');
+  });
 };
 
 var onMainPinMouseup = function () {
-  activatePage();
-  changeStateFieldset();
   fillAddress();
   renderPinFragment();
-  activatePage();
+  initForm();
 };
 
 var activatePage = function () {
   userMap.classList.remove('map--faded');
-  form.classList.remove('ad-form--disabled');
   document.addEventListener('keydown', onMainPinMouseup);
 };
 
 var deactivatePage = function () {
   userMap.classList.add('map--faded');
-  form.classList.add('ad-form--disabled');
   document.removeEventListener('keydown', onMainPinMouseup);
 };
 
@@ -234,10 +243,21 @@ var fillAddress = function () {
   address.value = getMainPinCords();
 };
 
-mainPin.addEventListener('mouseup', onMainPinMouseup);
+var emptyAddress = function () {
+  address.value = null;
+};
+
+
+mainPin.addEventListener('mouseup', function () {
+  onMainPinMouseup();
+  activatePage();
+});
 
 userMap.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     deactivatePage();
+    deletePopup();
+    disableForm();
+    emptyAddress();
   }
 });
