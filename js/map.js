@@ -162,14 +162,15 @@ var renderCardFragment = function (advert) {
   }
 };
 
-pinElements.addEventListener('click', function (evt) {
+var getMapPinsElements = function () {
   var target = evt.target;
   var parentElement = target.parentNode;
   var index = parentElement.dataset.adNumber;
 
   renderCardFragment(adverts[index]);
-});
+};
 
+// закрытие карточки объявления
 var popupClose = document.querySelector('.popup__close');
 
 var deletePopup = function () {
@@ -186,6 +187,7 @@ if (popupClose) {
 
 // активация страницы
 var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 65;
 
@@ -195,6 +197,14 @@ var form = document.querySelector('.ad-form');
 var fieldsets = document.querySelectorAll('fieldset');
 var address = form.querySelector('input[name="address"]');
 
+var activatePage = function () {
+  fillAddress();
+  getMapPinsElements();
+  initForm();
+  userMap.classList.remove('map--faded');
+};
+
+// блокировка/доступность полей формы
 var disableForm = function () {
   form.classList.add('ad-form--disabled');
   fieldsets.forEach(function (item) {
@@ -209,22 +219,6 @@ var initForm = function () {
   fieldsets.forEach(function (item) {
     item.removeAttribute('disabled');
   });
-};
-
-var onMainPinMouseup = function () {
-  fillAddress();
-  renderPinFragment();
-  initForm();
-};
-
-var activatePage = function () {
-  userMap.classList.remove('map--faded');
-  document.addEventListener('keydown', onMainPinMouseup);
-};
-
-var deactivatePage = function () {
-  userMap.classList.add('map--faded');
-  document.removeEventListener('keydown', onMainPinMouseup);
 };
 
 // заполнение поля адреса
@@ -248,14 +242,20 @@ var emptyAddress = function () {
 };
 
 
-mainPin.addEventListener('mouseup', function () {
-  onMainPinMouseup();
+mainPin.addEventListener('mouseup', function (evt) {
   activatePage();
 });
 
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activatePage();
+  }
+});
+
+// деактивация страницы
 userMap.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    deactivatePage();
+    userMap.classList.add('map--faded');
     deletePopup();
     disableForm();
     emptyAddress();
