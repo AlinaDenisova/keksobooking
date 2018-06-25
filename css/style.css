@@ -651,7 +651,9 @@ fieldset {
 
 input.invalid-field,
 select.invalid-field {
-  border: 1px solid  red;
+  border: 2px solid  red;
+  -webkit-box-shadow: 0 0 2px 2px #ff6547;
+        box-shadow: 0 0 2px 2px #ff6547;
   -webkit-animation: shake 0.6s;
           animation: shake 0.6s;
 }
