@@ -147,8 +147,8 @@ var renderCard = function (advertsArr, index) {
   cardElement.querySelector('.popup__text--address').textContent = advertsArr[index].offer.address;
   cardElement.querySelector('.popup__text--price').textContent = advertsArr[index].offer.price + '₽/ночь';
   cardElement.querySelector('.popup__type').textContent = advertsArr[index].offer.type;
-  cardElement.querySelector('.popup__text--capacity').textContent = advertsArr[index].offer.rooms + ' комнаты для ' + adverts[index].offer.guests + ' гостей';
-  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertsArr[index].offer.checkin + ', выезд до ' + adverts[index].offer.checkout;
+  cardElement.querySelector('.popup__text--capacity').textContent = advertsArr[index].offer.rooms + ' комнаты для ' + advertsArr[index].offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertsArr[index].offer.checkin + ', выезд до ' + advertsArr[index].offer.checkout;
   cardElement.querySelector('.popup__features').textContent = '';
   cardElement.querySelector('.popup__features').appendChild(renderFeatures(advertsArr[index].offer.features));
   cardElement.querySelector('.popup__description').textContent = advertsArr[index].offer.description;
