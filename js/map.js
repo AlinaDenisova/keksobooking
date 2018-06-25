@@ -190,8 +190,8 @@ var onPinClick = function (evt) {
   var activeAdvert = adverts[index];
   var existingPinElements = pinElements.querySelectorAll('.map__pin:not(.map__pin--main)');
   for (var i = 0; i < existingPinElements.length; i++) {
-    existingPinElements[i].addEventListener('click', function (evt) {
-      renderPopupFragment(adverts, evt.currentTarget.dataset.adNumber);
+    existingPinElements[i].addEventListener('click', function (evtClick) {
+      renderPopupFragment(adverts, evtClick.currentTarget.dataset.adNumber);
       if (activeAdvert) {
         deleteCard();
       }
