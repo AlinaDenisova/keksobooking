@@ -42,13 +42,15 @@ var getRandomLength = function (arr) {
   return arr.slice(getRandomNumber(0, arr.length - 1));
 };
 
-// массив объявлений
-var randomAdverts = function (advertCount) {
-  var adverts = [];
-  var getUserAvatar = function (i) {
-    var indexAvatar = i + 1;
-    return 'img/avatars/user0' + indexAvatar + '.png';
-  };
+var getUserAvatar = function (index) {
+  var pictureNumber = index + 1;
+  return 'img/avatars/user0' + pictureNumber + '.png';
+};
+
+
+// массив объектов объявлений
+var getRandomAdverts = function (advertCount) {
+  var advertsArr = [];
 
   for (var i = 0; i < advertCount; i++) {
     var locationX = getRandomNumber(LOCATION_MIN_X, LOCATION_MAX_X);
@@ -71,22 +73,20 @@ var randomAdverts = function (advertCount) {
         description: '',
         photos: getRandomMixArray(PHOTOS)
       },
-
+      data: i,
       location: {
         x: locationX,
         y: locationY
       }
     };
-    adverts.push(advert);
+
+    advertsArr.push(advert);
   }
-  return adverts;
+
+  return advertsArr;
 };
 
-var adverts = randomAdverts(ADVERTS_COUNT);
-
-// отображение карты
-var userMap = document.querySelector('.map');
-userMap.classList.remove('map--faded');
+var adverts = getRandomAdverts(ADVERTS_COUNT);
 
 // отрисовка меток на карте
 var pinTemplate = document.querySelector('template')
@@ -99,6 +99,7 @@ var renderPin = function (mapPin) {
   pinElement.style = 'left: ' + (mapPin.location.x - 0.5 * PIN_WIDTH) + 'px; top: ' + (mapPin.location.y - PIN_HEIGHT) + 'px;';
   pinElement.querySelector('img').src = mapPin.author.avatar;
   pinElement.querySelector('img').alt = mapPin.offer.title;
+  pinElement.setAttribute('data-ad-number', mapPin.data);
   return pinElement;
 };
 
@@ -109,8 +110,6 @@ var renderPinFragment = function () {
   }
   pinElements.appendChild(pinFragment);
 };
-
-renderPinFragment();
 
 // отрисовка карточки объявления
 var renderFeatures = function (features) {
@@ -138,31 +137,154 @@ var renderPhotos = function (photos) {
   return photosFragment;
 };
 
-var renderCard = function (mapCard) {
+var renderCard = function (advertsArr, index) {
   var cardTemplate = document.querySelector('template')
     .content
     .querySelector('.map__card');
   var cardElement = cardTemplate.cloneNode(true);
-  cardElement.querySelector('.popup__avatar').src = mapCard.author.avatar;
-  cardElement.querySelector('.popup__title').textContent = mapCard.offer.title;
-  cardElement.querySelector('.popup__text--address').textContent = mapCard.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = mapCard.offer.price + '₽/ночь';
-  cardElement.querySelector('.popup__type').textContent = mapCard.offer.type;
-  cardElement.querySelector('.popup__text--capacity').textContent = mapCard.offer.rooms + ' комнаты для ' + mapCard.offer.guests + ' гостей';
-  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + mapCard.offer.checkin + ', выезд до ' + mapCard.offer.checkout;
+  cardElement.querySelector('.popup__avatar').src = advertsArr[index].author.avatar;
+  cardElement.querySelector('.popup__title').textContent = advertsArr[index].offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = advertsArr[index].offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = advertsArr[index].offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = advertsArr[index].offer.type;
+  cardElement.querySelector('.popup__text--capacity').textContent = advertsArr[index].offer.rooms + ' комнаты для ' + advertsArr[index].offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertsArr[index].offer.checkin + ', выезд до ' + advertsArr[index].offer.checkout;
   cardElement.querySelector('.popup__features').textContent = '';
-  cardElement.querySelector('.popup__features').appendChild(renderFeatures(mapCard.offer.features));
-  cardElement.querySelector('.popup__description').textContent = mapCard.offer.description;
+  cardElement.querySelector('.popup__features').appendChild(renderFeatures(advertsArr[index].offer.features));
+  cardElement.querySelector('.popup__description').textContent = advertsArr[index].offer.description;
   cardElement.querySelector('.popup__photos').textContent = '';
-  cardElement.querySelector('.popup__photos').appendChild(renderPhotos(mapCard.offer.photos));
-
+  cardElement.querySelector('.popup__photos').appendChild(renderPhotos(advertsArr[index].offer.photos));
   return cardElement;
 };
 
-var renderCardFragment = function () {
+var renderPopupFragment = function (advertsArr, index) {
   var cardFragment = document.createDocumentFragment();
-  cardFragment.appendChild(renderCard(adverts[0]));
-  document.querySelector('.map').insertBefore(cardFragment, document.querySelector('.map__filter-container'));
+  cardFragment.appendChild(renderCard(advertsArr, index));
+  userMap.insertBefore(cardFragment, document.querySelector('.map__filters-container'));
 };
 
-renderCardFragment();
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 65;
+
+var userMap = document.querySelector('.map');
+var mainPin = document.querySelector('.map__pin--main');
+var form = document.querySelector('.ad-form');
+var fieldsets = document.querySelectorAll('fieldset');
+var address = form.querySelector('input[name="address"]');
+
+// удалить карточку объявления
+var deleteCard = function () {
+  var сard = userMap.querySelector('.map__card');
+  if (!(сard === null)) {
+    userMap.removeChild(сard);
+  }
+};
+
+// отрисовка карточки при клике на пин
+var onPinClick = function (evt) {
+  var target = evt.target;
+  var parentElement = target.parentNode;
+  var index = parentElement.dataset.adNumber;
+  var activeAdvert = adverts[index];
+  var existingPinElements = pinElements.querySelectorAll('.map__pin:not(.map__pin--main)');
+  for (var i = 0; i < existingPinElements.length; i++) {
+    existingPinElements[i].addEventListener('click', function (evtClick) {
+      renderPopupFragment(adverts, evtClick.currentTarget.dataset.adNumber);
+      if (activeAdvert) {
+        deleteCard();
+      }
+
+      var popupCloseButton = userMap.querySelector('.popup__close');
+      popupCloseButton.addEventListener('click', function () {
+        deleteCard();
+      });
+    });
+  }
+};
+
+pinElements.addEventListener('click', onPinClick);
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    onPinClick();
+  }
+});
+
+// блокировка/доступность полей формы
+var disableForm = function () {
+  form.classList.add('ad-form--disabled');
+  fieldsets.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+};
+
+disableForm();
+
+var initForm = function () {
+  form.classList.remove('ad-form--disabled');
+  fieldsets.forEach(function (item) {
+    item.removeAttribute('disabled');
+  });
+};
+
+// заполнение поля адреса
+var getMainPinCords = function () {
+  var mainPinX = parseInt(mainPin.style.left, 10) + (MAIN_PIN_WIDTH / 2);
+  var mainPinY = parseInt(mainPin.style.top, 10) + (MAIN_PIN_HEIGHT / 2);
+  if (!userMap.classList.contains('map--faded')) {
+    mainPinY += (MAIN_PIN_HEIGHT / 2);
+  }
+  return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
+};
+
+var fillAddress = function () {
+  address.value = getMainPinCords();
+};
+
+// активация страницы
+var activatePage = function () {
+  fillAddress();
+  renderPinFragment();
+  initForm();
+  userMap.classList.remove('map--faded');
+};
+
+mainPin.addEventListener('mouseup', function () {
+  activatePage();
+});
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activatePage();
+  }
+});
+
+// деактивация страницы
+var deletePins = function () {
+  var existingPinElements = pinElements.querySelectorAll('.map__pin:not(.map__pin--main)');
+  if (!(existingPinElements === null)) {
+    for (var i = 0; i < existingPinElements.length; i++) {
+      pinElements.removeChild(existingPinElements[i]);
+    }
+  }
+};
+
+var emptyAddress = function () {
+  address.value = null;
+};
+
+var deactivatePage = function () {
+  userMap.classList.add('map--faded');
+  deleteCard();
+  disableForm();
+  emptyAddress();
+  deletePins();
+};
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    deactivatePage();
+  }
+});
