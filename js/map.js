@@ -183,12 +183,18 @@ var deleteCard = function () {
 };
 
 // отрисовка карточки при клике на пин
-var onPinClick = function () {
+var onPinClick = function (evt) {
+  var target = evt.target;
+  var parentElement = target.parentNode;
+  var index = parentElement.dataset.adNumber;
+  var activeAdvert = adverts[index];
   var existingPinElements = pinElements.querySelectorAll('.map__pin:not(.map__pin--main)');
   for (var i = 0; i < existingPinElements.length; i++) {
     existingPinElements[i].addEventListener('click', function (evt) {
-      deleteCard();
       renderPopupFragment(adverts, evt.currentTarget.dataset.adNumber);
+      if (activeAdvert) {
+        deleteCard();
+      }
 
       var popupCloseButton = userMap.querySelector('.popup__close');
       popupCloseButton.addEventListener('click', function () {
@@ -277,9 +283,8 @@ var deactivatePage = function () {
   deletePins();
 };
 
-userMap.addEventListener('keydown', function (evt) {
+document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     deactivatePage();
   }
 });
-
