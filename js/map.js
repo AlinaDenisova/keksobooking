@@ -26,7 +26,7 @@ var getRandomElement = function (arr) {
 };
 
 // рандомное число массива
-var getRandomNumber = function (min, max) {
+var getRandomQuantity = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
@@ -39,12 +39,12 @@ var getRandomMixArray = function (arr) {
 
 // рандомная длина массива
 var getRandomLength = function (arr) {
-  return arr.slice(getRandomNumber(0, arr.length - 1));
+  return arr.slice(getRandomQuantity(0, arr.length - 1));
 };
 
 var getUserAvatar = function (index) {
-  var pictureNumber = index + 1;
-  return 'img/avatars/user0' + pictureNumber + '.png';
+  var pictureQuantity = index + 1;
+  return 'img/avatars/user0' + pictureQuantity + '.png';
 };
 
 
@@ -53,8 +53,8 @@ var getRandomAdverts = function (advertCount) {
   var advertsArr = [];
 
   for (var i = 0; i < advertCount; i++) {
-    var locationX = getRandomNumber(LOCATION_MIN_X, LOCATION_MAX_X);
-    var locationY = getRandomNumber(LOCATION_MIN_Y, LOCATION_MAX_Y);
+    var locationX = getRandomQuantity(LOCATION_MIN_X, LOCATION_MAX_X);
+    var locationY = getRandomQuantity(LOCATION_MIN_Y, LOCATION_MAX_Y);
 
     var advert = {
       author: {
@@ -63,10 +63,10 @@ var getRandomAdverts = function (advertCount) {
       offer: {
         title: TITLES[i],
         address: locationX + ', ' + locationY,
-        price: getRandomNumber(PRICE_MIN, PRICE_MAX),
+        price: getRandomQuantity(PRICE_MIN, PRICE_MAX),
         type: getRandomElement(TYPES),
-        rooms: getRandomNumber(ROOMS_MIN, ROOMS_MAX),
-        guests: getRandomNumber(GUESTS_MIN, GUESTS_MAX),
+        rooms: getRandomQuantity(ROOMS_MIN, ROOMS_MAX),
+        guests: getRandomQuantity(GUESTS_MIN, GUESTS_MAX),
         checkin: getRandomElement(CHECKIN_TIME),
         checkout: getRandomElement(CHECKOUT_TIME),
         features: getRandomLength(FEATURES),
@@ -99,7 +99,7 @@ var renderPin = function (mapPin) {
   pinElement.style = 'left: ' + (mapPin.location.x - 0.5 * PIN_WIDTH) + 'px; top: ' + (mapPin.location.y - PIN_HEIGHT) + 'px;';
   pinElement.querySelector('img').src = mapPin.author.avatar;
   pinElement.querySelector('img').alt = mapPin.offer.title;
-  pinElement.setAttribute('data-ad-number', mapPin.data);
+  pinElement.setAttribute('data-ad-Quantity', mapPin.data);
   return pinElement;
 };
 
@@ -188,7 +188,7 @@ var onPinClick = function () {
   for (var i = 0; i < existingPinElements.length; i++) {
     existingPinElements[i].addEventListener('click', function (evt) {
       deleteCard();
-      renderPopupFragment(adverts, evt.currentTarget.dataset.adNumber);
+      renderPopupFragment(adverts, evt.currentTarget.dataset.adQuantity);
 
       var popupCloseButton = userMap.querySelector('.popup__close');
       popupCloseButton.addEventListener('click', function () {
@@ -299,79 +299,53 @@ var resetButton = form.querySelector('.ad-form__reset');
 var options = guestsQuantity.querySelectorAll('option');
 var inputsValid = [price, title];
 
+var houseTypeMap = {
+  'bungalo': {
+    MIN_VALUE: '0',
+    PLACEHOLDER: '0',
+  },
+  'flat': {
+    MIN_VALUE: '1000',
+    PLACEHOLDER: '1 000',
+  },
+  'house': {
+    MIN_VALUE: '5000',
+    PLACEHOLDER: '5 000',
+  },
+  'palace': {
+    MIN_VALUE: '10000',
+    PLACEHOLDER: '10 000'
+  }
+};
+
+var roomQuantityMap = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
+};
+
+// соответсвие значения поля цены полю жилья
 var onMinPrice = function () {
-  if (houseType.value === 'flat') {
-    price.placeholder = 1000;
-    price.min = 1000;
-  } else if (houseType.value === 'house') {
-    price.placeholder = 5000;
-    price.min = 5000;
-  } else if (houseType.value === 'palace') {
-    price.placeholder = 10000;
-    price.min = 10000;
-  } else {
-    price.placeholder = 0;
-    price.min = 0;
-  }
+  price.min = houseTypeMap[houseType.value].MIN_VALUE;
+  price.placeholder = houseTypeMap[houseType.value].PLACEHOLDER;
 };
 
-var onСhangeArrivalTime = function () {
-  if (arrivalTime.value === '12:00') {
-    departureTime.value = '12:00';
-  } else if (arrivalTime.value === '13:00') {
-    departureTime.value = '13:00';
-  } else {
-    departureTime.value = '14:00';
-  }
+
+// соответсвие значения поля времени приезда полю времени отъезда
+var setTime = function (element, value) {
+  element.value = value;
 };
 
-var onChangeDepartureTime = function () {
-  if (departureTime.value === '12:00') {
-    arrivalTime.value = '12:00';
-  } else if (departureTime.value === '13:00') {
-    arrivalTime.value = '13:00';
-  } else {
-    arrivalTime.value = '14:00';
-  }
+// соответсвие значения поля количества гостей полю количества комнат
+var onCapacityChange = function () {
+  options.forEach(function (element) {
+    element.disabled = !roomQuantityMap[roomQuantity.value].includes(element.value);
+  });
+  guestsQuantity.value = roomQuantityMap[roomQuantity.value].includes(guestsQuantity.value) ? guestsQuantity.value : roomQuantityMap[roomQuantity.value][0];
 };
 
-var disableValue = function (number) {
-  number.setAttribute('disabled', 'disabled');
-};
-
-var onСhangeCapacity = function () {
-  for (var i = 0; i < options.length; i++) {
-    options[i].removeAttribute('disabled');
-  }
-  if (roomQuantity.value === '2') {
-    disableValue(options[0]);
-    disableValue(options[3]);
-    if (guestsQuantity.value === '3' || guestsQuantity.value === '0') {
-      guestsQuantity.value = '2';
-    }
-  } else if (roomQuantity.value === '1') {
-    disableValue(options[0]);
-    disableValue(options[1]);
-    disableValue(options[3]);
-    if (guestsQuantity.value !== '1') {
-      guestsQuantity.value = '1';
-    }
-  } else if (roomQuantity.value === '3') {
-    disableValue(options[3]);
-    options[3].setAttribute('disabled', 'disabled');
-    if (guestsQuantity.value === '0') {
-      guestsQuantity.value = '3';
-    }
-  } else {
-    disableValue(options[0]);
-    disableValue(options[1]);
-    disableValue(options[2]);
-    if (guestsQuantity.value !== '0') {
-      guestsQuantity.value = '0';
-    }
-  }
-};
-
+// проверка на валидность поля
 var validityInput = function () {
   for (var i = 0; i < inputsValid.length; i++) {
     var validity = inputsValid[i].validity.valid;
@@ -386,14 +360,17 @@ var validityInput = function () {
 };
 
 houseType.addEventListener('input', onMinPrice);
-arrivalTime.addEventListener('input', onСhangeArrivalTime);
-departureTime.addEventListener('input',onChangeDepartureTime);
-roomQuantity.addEventListener('input', onСhangeCapacity);
+arrivalTime.addEventListener('input', function (evt) {
+  setTime(departureTime, evt.target.value);
+});
+departureTime.addEventListener('input', function (evt) {
+  setTime(arrivalTime, evt.target.value);
+});
+roomQuantity.addEventListener('input', onCapacityChange);
 
 submitButton.addEventListener('click', function () {
   validityInput();
 });
-
 submitButton.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
     validityInput();
@@ -402,21 +379,19 @@ submitButton.addEventListener('keydown', function (evt) {
 
 // сброс формы
 var resetForm = function () {
-  setTimeout(function () {
   title.value = null;
   description.value = null;
   price.placeholder = 0;
   price.min = 0;
   capacity.value = '1';
-  disableValue(options[0]);
-  disableValue(options[1]);
-  disableValue(options[3]);
+  options[0].setAttribute('disabled', 'disabled');
+  options[1].setAttribute('disabled', 'disabled');
+  options[3].setAttribute('disabled', 'disabled');
   for (var i = 0; i < inputsValid.length; i++) {
     if (inputsValid[i].classList.contains('invalid-field')) {
       inputsValid[i].classList.remove('invalid-field');
     }
   }
-  }, 0);
 };
 
 resetButton.addEventListener('click', function () {
