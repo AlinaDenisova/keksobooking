@@ -284,8 +284,7 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
-//валидация формы
-var form = document.querySelector('.ad-form');
+// валидация формы
 var title = form.querySelector('#title');
 var houseType = form.querySelector('#type');
 var price = form.querySelector('#price');
@@ -383,7 +382,7 @@ var resetForm = function () {
   description.value = null;
   price.placeholder = 0;
   price.min = 0;
-  capacity.value = '1';
+  guestsQuantity.value = '1';
   options[0].setAttribute('disabled', 'disabled');
   options[1].setAttribute('disabled', 'disabled');
   options[3].setAttribute('disabled', 'disabled');
