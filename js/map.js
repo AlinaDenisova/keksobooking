@@ -361,7 +361,7 @@ var resetForm = function () {
     price.placeholder = 0;
     price.min = 0;
     guestsQuantity.value = '1';
-    fillAddress()
+    fillAddress();
     onCapacityChange();
     for (var i = 0; i < inputsValid.length; i++) {
       if (inputsValid[i].classList.contains('invalid-field')) {
