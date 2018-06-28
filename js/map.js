@@ -206,6 +206,12 @@ document.addEventListener('keydown', function (evt) {
   }
 });
 
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    deleteCard();
+  }
+});
+
 // блокировка/доступность полей формы
 var disableForm = function () {
   form.classList.add('ad-form--disabled');
@@ -252,35 +258,6 @@ mainPin.addEventListener('mouseup', function () {
 mainPin.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     activatePage();
-  }
-});
-
-// деактивация страницы
-var deletePins = function () {
-  var existingPinElements = pinElements.querySelectorAll('.map__pin:not(.map__pin--main)');
-  if (!(existingPinElements === null)) {
-    for (var i = 0; i < existingPinElements.length; i++) {
-      pinElements.removeChild(existingPinElements[i]);
-    }
-  }
-};
-
-var emptyAddress = function () {
-  address.value = null;
-};
-
-var deactivatePage = function () {
-  userMap.classList.add('map--faded');
-  deleteCard();
-  disableForm();
-  emptyAddress();
-  deletePins();
-  resetForm();
-};
-
-document.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    deactivatePage();
   }
 });
 
@@ -378,34 +355,29 @@ submitButton.addEventListener('keydown', function (evt) {
 
 // сброс формы
 var resetForm = function () {
-  title.value = null;
-  description.value = null;
-  price.placeholder = 0;
-  price.min = 0;
-  guestsQuantity.value = '1';
-  options[0].setAttribute('disabled', 'disabled');
-  options[1].setAttribute('disabled', 'disabled');
-  options[3].setAttribute('disabled', 'disabled');
-  for (var i = 0; i < inputsValid.length; i++) {
-    if (inputsValid[i].classList.contains('invalid-field')) {
-      inputsValid[i].classList.remove('invalid-field');
+  setTimeout(function () {
+    title.value = null;
+    description.value = null;
+    price.placeholder = 0;
+    price.min = 0;
+    guestsQuantity.value = '1';
+    fillAddress()
+    onCapacityChange();
+    for (var i = 0; i < inputsValid.length; i++) {
+      if (inputsValid[i].classList.contains('invalid-field')) {
+        inputsValid[i].classList.remove('invalid-field');
+      }
     }
-  }
+  }, 0);
 };
 
 resetButton.addEventListener('click', function () {
   resetForm();
-  setTimeout(function () {
-    fillAddress();
-  }, 0);
 });
 
 resetButton.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
     resetForm();
-    setTimeout(function () {
-      fillAddress();
-    }, 0);
   }
 });
 
