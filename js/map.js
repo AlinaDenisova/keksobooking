@@ -230,17 +230,14 @@ var initForm = function () {
 };
 
 // заполнение поля адреса
-var getMainPinCords = function () {
-  var mainPinX = parseInt(mainPin.style.left, 10) + (MAIN_PIN_WIDTH / 2);
-  var mainPinY = parseInt(mainPin.style.top, 10) + (MAIN_PIN_HEIGHT / 2);
-  if (!userMap.classList.contains('map--faded')) {
-    mainPinY += (MAIN_PIN_HEIGHT / 2);
-  }
+var getMainPinCoords = function () {
+  var mainPinX = mainPin.offsetLeft + MAIN_PIN_WIDTH / 2;
+  var mainPinY = mainPin.offsetTop + PIN_HEIGHT / 2;
   return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
 };
 
 var fillAddress = function () {
-  address.value = getMainPinCords();
+  address.value = getMainPinCoords();
 };
 
 // активация страницы
@@ -362,6 +359,7 @@ var resetForm = function () {
     price.min = 0;
     guestsQuantity.value = '1';
     fillAddress();
+    mainPin.style = 'left: 570px; top: 375px';
     onCapacityChange();
     for (var i = 0; i < inputsValid.length; i++) {
       if (inputsValid[i].classList.contains('invalid-field')) {
@@ -381,3 +379,52 @@ resetButton.addEventListener('keydown', function (evt) {
   }
 });
 
+// перетаскивание пина
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var minDistanceTopPin = LOCATION_MIN_Y - MAIN_PIN_HEIGHT;
+    var maxDistanceTopPin = LOCATION_MAX_Y - MAIN_PIN_HEIGHT;
+    var top = mainPin.offsetTop - shift.y;
+    var left = mainPin.offsetLeft - shift.x;
+
+    if (top <= (minDistanceTopPin)) {
+      mainPin.style.top = minDistanceTopPin + 'px';
+      mainPin.style.left = left + 'px';
+      startCoords.y = minDistanceTopPin;
+    } else if (top >= maxDistanceTopPin) {
+      mainPin.style.top = maxDistanceTopPin + 'px';
+      mainPin.style.left = left + 'px';
+      startCoords.y = maxDistanceTopPin;
+    } else {
+      mainPin.style.top = top + 'px';
+      mainPin.style.left = left + 'px';
+    }
+    fillAddress();
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    userMap.removeEventListener('mousemove', onMouseMove);
+    userMap.removeEventListener('mouseup', onMouseUp);
+  };
+  userMap.addEventListener('mousemove', onMouseMove);
+  userMap.addEventListener('mouseup', onMouseUp);
+});
