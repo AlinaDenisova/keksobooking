@@ -2,18 +2,10 @@
 
 (function () {
 
-  var address = document.querySelector('input[name="address"]');
-
-    var getMainPinCoords = function () {
-    var mainPin = document.querySelector('.map__pin--main');
-    var mainPinX = mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
-    var mainPinY = mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT / 2;
-    return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
-  };
-
   // перетаскивание пина
   var mainPin = document.querySelector('.map__pin--main');
   var userMap = document.querySelector('.map');
+  var constants = window.constants;
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -35,8 +27,8 @@
         y: moveEvt.clientY
       };
 
-      var minDistanceTopPin = window.constantsLOCATION_MIN_Y - window.constantsMAIN_PIN_HEIGHT;
-      var maxDistanceTopPin = window.constantsLOCATION_MAX_Y - window.constantsMAIN_PIN_HEIGHT;
+      var minDistanceTopPin = constants.LOCATION_MIN_Y - constants.MAIN_PIN_HEIGHT;
+      var maxDistanceTopPin = constants.LOCATION_MAX_Y - constants.MAIN_PIN_HEIGHT;
       var top = mainPin.offsetTop - shift.y;
       var left = mainPin.offsetLeft - shift.x;
 

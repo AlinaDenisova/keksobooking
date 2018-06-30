@@ -5,6 +5,7 @@
   // отрисовка карточки объявления
   var pinElements = document.querySelector('.map__pins');
   var userMap = document.querySelector('.map');
+  var utils = window.utils;
 
   var renderFeatures = function (features) {
     var featuresFragment = document.createDocumentFragment();
@@ -59,9 +60,9 @@
 
   // удалить карточку объявления
   var deleteCard = function () {
-    var сard = userMap.querySelector('.map__card');
-    if (!(сard === null)) {
-      userMap.removeChild(сard);
+    var card = userMap.querySelector('.map__card');
+    if (!(card === null)) {
+      userMap.removeChild(card);
     }
   };
 
@@ -71,7 +72,7 @@
     for (var i = 0; i < existingPinElements.length; i++) {
       existingPinElements[i].addEventListener('click', function (evt) {
         deleteCard();
-        renderPopupFragment(window.utils.adverts, evt.currentTarget.dataset.adQuantity);
+        renderPopupFragment(utils.adverts, evt.currentTarget.dataset.adQuantity);
 
         var popupCloseButton = userMap.querySelector('.popup__close');
         popupCloseButton.addEventListener('click', function () {
@@ -84,10 +85,10 @@
   pinElements.addEventListener('click', onPinClick);
 
   document.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, onPinClick);
+    utils.isEnterEvent(evt, onPinClick);
   });
 
   document.addEventListener('keydown', function (evt) {
-    window.utils.isEscEvent(evt, onPinClick);
+    utils.isEscEvent(evt, deleteCard);
   });
 })();

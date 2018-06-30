@@ -28,7 +28,6 @@
     MAIN_PIN_WIDTH: 65,
     MAIN_PIN_HEIGHT: 65,
     DEBOUNCE_INTERVAL: 300,
-    URL: 'https://js.dump.academy/code-and-magick',
     FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png']
   };
 })();

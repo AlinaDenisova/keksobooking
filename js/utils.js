@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var constants = window.constants;
 
   // событие нажатия клавиши ESC
   var isEscEvent = function (evt, action) {
@@ -50,25 +51,25 @@
     };
 
     for (var i = 0; i < advertCount; i++) {
-      var locationX = getRandomQuantity(window.constants.LOCATION_MIN_X, window.constants.LOCATION_MAX_X);
-      var locationY = getRandomQuantity(window.constants.LOCATION_MIN_Y, window.constants.LOCATION_MAX_Y);
+      var locationX = getRandomQuantity(constants.LOCATION_MIN_X, constants.LOCATION_MAX_X);
+      var locationY = getRandomQuantity(constants.LOCATION_MIN_Y, constants.LOCATION_MAX_Y);
 
       var advert = {
         author: {
           avatar: getUserAvatar(i)
         },
         offer: {
-          title: window.constants.TITLES[i],
+          title: constants.TITLES[i],
           address: locationX + ', ' + locationY,
-          price: getRandomQuantity(window.constants.PRICE_MIN, window.constants.PRICE_MAX),
-          type: getRandomElement(window.constants.TYPES),
-          rooms: getRandomQuantity(window.constants.ROOMS_MIN, window.constants.ROOMS_MAX),
-          guests: getRandomQuantity(window.constants.GUESTS_MIN, window.constants.GUESTS_MAX),
-          checkin: getRandomElement(window.constants.CHECKIN_TIME),
-          checkout: getRandomElement(window.constants.CHECKOUT_TIME),
-          features: getRandomLength(window.constants.FEATURES),
+          price: getRandomQuantity(constants.PRICE_MIN, constants.PRICE_MAX),
+          type: getRandomElement(constants.TYPES),
+          rooms: getRandomQuantity(constants.ROOMS_MIN, constants.ROOMS_MAX),
+          guests: getRandomQuantity(constants.GUESTS_MIN, constants.GUESTS_MAX),
+          checkin: getRandomElement(constants.CHECKIN_TIME),
+          checkout: getRandomElement(constants.CHECKOUT_TIME),
+          features: getRandomLength(constants.FEATURES),
           description: '',
-          photos: getRandomMixArray(window.constants.PHOTOS)
+          photos: getRandomMixArray(constants.PHOTOS)
         },
         data: i,
         location: {
@@ -83,7 +84,7 @@
     return advertsArr;
   };
 
-  var adverts = getRandomAdverts(window.constants.ADVERTS_COUNT);
+  var adverts = getRandomAdverts(constants.ADVERTS_COUNT);
 
   window.utils = {
     isEscEvent: isEscEvent,

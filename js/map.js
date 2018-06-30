@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var constants = window.constants;
 
   // отрисовка меток на карте
   var pinTemplate = document.querySelector('template')
@@ -10,7 +11,7 @@
 
   var renderPin = function (mapPin) {
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.style = 'left: ' + (mapPin.location.x - 0.5 * window.constants.PIN_WIDTH) + 'px; top: ' + (mapPin.location.y - window.constants.PIN_HEIGHT) + 'px;';
+    pinElement.style = 'left: ' + (mapPin.location.x - 0.5 * constants.PIN_WIDTH) + 'px; top: ' + (mapPin.location.y - constants.PIN_HEIGHT) + 'px;';
     pinElement.querySelector('img').src = mapPin.author.avatar;
     pinElement.querySelector('img').alt = mapPin.offer.title;
     pinElement.setAttribute('data-ad-Quantity', mapPin.data);
@@ -25,18 +26,17 @@
     pinElements.appendChild(pinFragment);
   };
 
-    // получение координат главного пина
-    var getMainPinCoords = function () {
-      var mainPin = document.querySelector('.map__pin--main');
-      var mainPinX = mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
-      var mainPinY = mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT / 2;
-      return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
-    };
+  // получение координат главного пина
+  var getMainPinCoords = function () {
+    var mainPin = document.querySelector('.map__pin--main');
+    var mainPinX = mainPin.offsetLeft + constants.MAIN_PIN_WIDTH / 2;
+    var mainPinY = mainPin.offsetTop + constants.MAIN_PIN_HEIGHT / 2;
+    return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
+  };
 
   window.map = {
     renderPinFragment: renderPinFragment,
     getMainPinCoords: getMainPinCoords
   };
-
 })();
 

@@ -48,5 +48,4 @@
   window.page = {
     fillAddress: fillAddress
   };
-
 })();
