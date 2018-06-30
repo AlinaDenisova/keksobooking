@@ -102,7 +102,7 @@
       price.placeholder = 0;
       price.min = 0;
       guestsQuantity.value = '1';
-      window.utils.fillAddress();
+      window.page.fillAddress();
       mainPin.style = 'left: 570px; top: 375px';
       onCapacityChange();
       for (var i = 0; i < inputsValid.length; i++) {

@@ -31,7 +31,7 @@
   // активация страницы
   var activatePage = function () {
     fillAddress();
-    renderPinFragment();
+    window.map.renderPinFragment();
     initForm();
     userMap.classList.remove('map--faded');
   };
