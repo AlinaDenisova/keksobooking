@@ -6,6 +6,7 @@
   var mainPin = document.querySelector('.map__pin--main');
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
+  var address = document.querySelector('input[name="address"]');
 
   var fillAddress = function () {
     address.value = window.map.getMainPinCoords();

@@ -11,10 +11,6 @@
     return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
   };
 
-  var fillAddress = function () {
-    address.value = getMainPinCoords();
-  };
-
   // перетаскивание пина
   var mainPin = document.querySelector('.map__pin--main');
   var userMap = document.querySelector('.map');
