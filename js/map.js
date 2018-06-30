@@ -29,7 +29,7 @@
     var getMainPinCoords = function () {
       var mainPin = document.querySelector('.map__pin--main');
       var mainPinX = mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
-      var mainPinY = mainPin.offsetTop + window.constants.PIN_HEIGHT / 2;
+      var mainPinY = mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT / 2;
       return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
     };
 

@@ -30,7 +30,7 @@
 
   // активация страницы
   var activatePage = function () {
-    window.utils.fillAddress();
+    fillAddress();
     renderPinFragment();
     initForm();
     userMap.classList.remove('map--faded');
@@ -43,5 +43,9 @@
   mainPin.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, activatePage);
   });
+
+  window.page = {
+    fillAddress: fillAddress
+  };
 
 })();

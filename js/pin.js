@@ -1,17 +1,13 @@
 'use strict';
 
 (function () {
-    var LOCATION_MIN_Y= 130;
-    var LOCATION_MAX_Y= 630;
-    var MAIN_PIN_HEIGHT= 65;
-    var MAIN_PIN_WIDTH= 65;
 
   var address = document.querySelector('input[name="address"]');
 
     var getMainPinCoords = function () {
     var mainPin = document.querySelector('.map__pin--main');
-    var mainPinX = mainPin.offsetLeft + MAIN_PIN_WIDTH / 2;
-    var mainPinY = mainPin.offsetTop + MAIN_PIN_HEIGHT / 2;
+    var mainPinX = mainPin.offsetLeft + window.constants.MAIN_PIN_WIDTH / 2;
+    var mainPinY = mainPin.offsetTop + window.constants.MAIN_PIN_HEIGHT / 2;
     return Math.floor(mainPinX) + ', ' + Math.floor(mainPinY);
   };
 
@@ -43,8 +39,8 @@
         y: moveEvt.clientY
       };
 
-      var minDistanceTopPin = LOCATION_MIN_Y - MAIN_PIN_HEIGHT;
-      var maxDistanceTopPin = LOCATION_MAX_Y - MAIN_PIN_HEIGHT;
+      var minDistanceTopPin = window.constantsLOCATION_MIN_Y - window.constantsMAIN_PIN_HEIGHT;
+      var maxDistanceTopPin = window.constantsLOCATION_MAX_Y - window.constantsMAIN_PIN_HEIGHT;
       var top = mainPin.offsetTop - shift.y;
       var left = mainPin.offsetLeft - shift.x;
 
@@ -60,7 +56,7 @@
         mainPin.style.top = top + 'px';
         mainPin.style.left = left + 'px';
       }
-      fillAddress();
+      window.page.fillAddress();
     };
 
     var onMouseUp = function (upEvt) {
