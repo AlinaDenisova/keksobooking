@@ -8,6 +8,7 @@
   var fieldsets = document.querySelectorAll('fieldset');
   var address = document.querySelector('input[name="address"]');
 
+  // заполнение поля адреса
   var fillAddress = function () {
     address.value = window.map.getMainPinCoords();
   };
@@ -32,9 +33,9 @@
   // активация страницы
   var activatePage = function () {
     fillAddress();
-    window.map.renderPinFragment();
     initForm();
     userMap.classList.remove('map--faded');
+    window.backend.load(window.map.renderPinFragment, window.backend.errorHandler);
   };
 
   mainPin.addEventListener('mouseup', function () {
