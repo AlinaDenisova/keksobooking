@@ -55,4 +55,5 @@
     userMap.addEventListener('mousemove', onMouseMove);
     userMap.addEventListener('mouseup', onMouseUp);
   });
+
 })();

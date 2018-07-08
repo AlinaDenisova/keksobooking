@@ -16,6 +16,7 @@
   var options = guestsQuantity.querySelectorAll('option');
   var mainPin = document.querySelector('.map__pin--main');
   var inputsValid = [price, title];
+  var form = document.querySelector('.ad-form');
 
   var houseTypeMap = {
     'bungalo': {
@@ -88,10 +89,9 @@
   submitButton.addEventListener('click', function () {
     validityInput();
   });
+
   submitButton.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      validityInput();
-    }
+    window.utils.isEnterEvent(evt, validityInput);
   });
 
   // сброс формы
@@ -119,5 +119,10 @@
 
   resetButton.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, resetForm);
+  });
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), resetForm, window.backend.errorHandler);
+    evt.preventDefault();
   });
 })();
