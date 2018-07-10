@@ -41,13 +41,29 @@
     return arr.slice(getRandomQuantity(0, arr.length - 1));
   };
 
+    // устранение "дребезга"
+  var debounce = function (fun) {
+    var lastTimeout = null;
+    return function () {
+      var args = arguments;
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(function () {
+        fun.apply(null, args);
+      }, constants.DEBOUNCE_INTERVAL);
+    };
+  };
+
+
   window.utils = {
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     getRandomElement: getRandomElement,
     getRandomQuantity: getRandomQuantity,
     getRandomMixArray: getRandomMixArray,
-    getRandomLength: getRandomLength
+    getRandomLength: getRandomLength,
+    debounce: debounce
   };
 
 })();

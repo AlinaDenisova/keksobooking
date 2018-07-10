@@ -55,10 +55,17 @@
   // отрисовка меток на карте
   var renderPinFragment = function (adverts) {
     var pinFragment = document.createDocumentFragment();
-    for (var i = 0; i < adverts.length; i++) {
+    for (var i = 0; i < constants.PIN_COUNT; i++) {
       pinFragment.appendChild(renderPin(adverts[i]));
     }
     pinElements.appendChild(pinFragment);
+  };
+
+  var resetPins = function () {
+    var existingPinElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < existingPinElements.length; i++) {
+      pinElements.removeChild(existingPinElements[i]);
+    }
   };
 
   // получение координат главного пина
@@ -69,9 +76,11 @@
   };
 
   window.map = {
+    renderPin: renderPin,
     deactivatePin: deactivatePin,
     renderPinFragment: renderPinFragment,
     getMainPinCoords: getMainPinCoords,
+    resetPins: resetPins
   };
 })();
 

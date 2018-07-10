@@ -3,20 +3,20 @@
 (function () {
 
 // валидация формы
-  var title = document.querySelector('#title');
-  var houseType = document.querySelector('#type');
-  var price = document.querySelector('#price');
-  var arrivalTime = document.querySelector('#timein');
-  var departureTime = document.querySelector('#timeout');
-  var roomQuantity = document.querySelector('#room_number');
-  var guestsQuantity = document.querySelector('#capacity');
-  var description = document.querySelector('#description');
-  var submitButton = document.querySelector('.ad-form__submit');
-  var resetButton = document.querySelector('.ad-form__reset');
+  var form = document.querySelector('.ad-form');
+  var title = form.querySelector('#title');
+  var houseType = form.querySelector('#type');
+  var price = form.querySelector('#price');
+  var arrivalTime = form.querySelector('#timein');
+  var departureTime = form.querySelector('#timeout');
+  var roomQuantity = form.querySelector('#room_number');
+  var guestsQuantity = form.querySelector('#capacity');
+  var description = form.querySelector('#description');
+  var submitButton = form.querySelector('.ad-form__submit');
+  var resetButton = form.querySelector('.ad-form__reset');
   var options = guestsQuantity.querySelectorAll('option');
   var mainPin = document.querySelector('.map__pin--main');
   var inputsValid = [price, title];
-  var form = document.querySelector('.ad-form');
 
   var houseTypeMap = {
     'bungalo': {
@@ -100,6 +100,7 @@
       title.value = null;
       description.value = null;
       price.placeholder = 0;
+      price.value = null;
       price.min = 0;
       guestsQuantity.value = '1';
       window.page.fillAddress();
@@ -115,10 +116,12 @@
 
   resetButton.addEventListener('click', function () {
     resetForm();
+    window.card.deleteCard();
   });
 
   resetButton.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, resetForm);
+    window.utils.isEnterEvent(evt, window.card.deleteCard);
   });
 
   form.addEventListener('submit', function (evt) {
