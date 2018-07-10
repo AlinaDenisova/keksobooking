@@ -19,9 +19,9 @@
   var selectPin = function (adverts) {
     selectedPins = adverts;
     var FilterRules = {
-      houseType: 'type',
-      quantityRooms: 'rooms',
-      quantityGuests: 'guests'
+      'houseType': 'type',
+      'quantityRooms': 'rooms',
+      'quantityGuests': 'guests'
     };
 
     var filterValue = function (element, property) {
@@ -69,7 +69,7 @@
     }
 
     if (selectedPins.length) {
-      window.map.renderMapFragment(selectedPins);
+      window.map.renderPinFragment(selectedPins);
     }
   };
 
