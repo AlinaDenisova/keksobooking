@@ -35,7 +35,7 @@
     fillAddress();
     initForm();
     userMap.classList.remove('map--faded');
-    window.backend.load(window.map.renderPinFragment, window.backend.errorHandler);
+    window.backend.load(window.filter.successHandler, window.backend.errorHandler);
   };
 
   mainPin.addEventListener('mouseup', function () {
