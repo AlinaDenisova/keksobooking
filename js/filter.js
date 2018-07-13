@@ -18,18 +18,18 @@
       'housing-guests': 'guests'
     };
 
-    var filterValue = function (element, property) {
+    var filterByValue = function (element, property) {
       return selectedPins.filter(function (newData) {
         return newData.offer[property].toString() === element.value;
       });
     };
 
     // фильтрация по цене
-    var filterPrice = function () {
+    var filterByPrice = function (filterPrice) {
       return selectedPins.filter(function (newData) {
         var filterPriceValues = {
           'low': newData.offer.price <= constants.FILTER_PRICE_MIN,
-          'middle': newData.offer.price >= constants.FILTER_PRICE_MIN && newData.offer.price <= constants.FILTER.PRICE_MAX,
+          'middle': newData.offer.price >= constants.FILTER_PRICE_MIN && newData.offer.price <= constants.FILTER_PRICE_MAX,
           'high': newData.offer.price >= constants.FILTER_PRICE_MAX
         };
         return filterPriceValues[filterPrice.value];
@@ -37,7 +37,7 @@
     };
 
     // фильтрация по удобствам
-    var filterFeatures = function (item) {
+    var filterByFeatures = function (item) {
       return selectedPins.filter(function (newData) {
         return newData.offer.features.indexOf(item.value) >= 0;
       });
@@ -47,9 +47,9 @@
       select.forEach(function (item) {
         if (item.value !== 'any') {
           if (item.id !== 'housing-price') {
-            selectedPins = filterValue(item, FilterRules[item.id]);
+            selectedPins = filterByValue(item, FilterRules[item.id]);
           } else {
-            selectedPins = filterPrice(item);
+            selectedPins = filterByPrice(item);
           }
         }
       });
@@ -57,7 +57,7 @@
 
     if (features !== null) {
       features.forEach(function (item) {
-        selectedPins = filterFeatures(item);
+        selectedPins = filterByFeatures(item);
       });
     }
 
