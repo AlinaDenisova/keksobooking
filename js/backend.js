@@ -11,6 +11,7 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
+        window.advertsData = xhr.response;
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -56,4 +57,5 @@
     save: save,
     errorHandler: errorHandler
   };
+
 })();

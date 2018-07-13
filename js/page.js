@@ -7,6 +7,7 @@
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
   var address = document.querySelector('input[name="address"]');
+  var filters = document.querySelector('.map__filters');
 
   // заполнение поля адреса
   var fillAddress = function () {
@@ -30,12 +31,16 @@
     });
   };
 
+  var successHandler = function (adverts) {
+    window.map.renderPinFragment(adverts);
+  };
+
   // активация страницы
   var activatePage = function () {
     fillAddress();
     initForm();
     userMap.classList.remove('map--faded');
-    window.backend.load(window.filter.successHandler, window.backend.errorHandler);
+    window.backend.load(successHandler, window.backend.errorHandler);
   };
 
   mainPin.addEventListener('mouseup', function () {
@@ -45,6 +50,16 @@
   mainPin.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, activatePage);
   });
+
+  // клик на фильтре
+  var onFilterChange = function (evt) {
+    evt.preventDefault();
+    window.card.deleteCard();
+    window.map.resetPins();
+    window.utils.debounce(window.filter.updatePins(window.advertsData));
+  };
+
+  filters.addEventListener('change', onFilterChange);
 
   window.page = {
     fillAddress: fillAddress

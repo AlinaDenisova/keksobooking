@@ -55,9 +55,9 @@
   // отрисовка меток на карте
   var renderPinFragment = function (adverts) {
     var pinFragment = document.createDocumentFragment();
-    for (var i = 0; i < constants.PIN_COUNT; i++) {
-      pinFragment.appendChild(renderPin(adverts[i]));
-    }
+    adverts.forEach(function (item) {
+      pinFragment.appendChild(renderPin(item));
+    });
     pinElements.appendChild(pinFragment);
   };
 
@@ -82,5 +82,5 @@
     getMainPinCoords: getMainPinCoords,
     resetPins: resetPins
   };
-})();
 
+})();

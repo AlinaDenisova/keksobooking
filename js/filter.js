@@ -5,7 +5,7 @@
   var constants = window.constants;
   var filters = document.querySelector('.map__filters');
 
-  var updateData = function (adverts) {
+  var updatePins = function (adverts) {
 
     var selectedPins = adverts.slice();
 
@@ -13,9 +13,9 @@
     var features = filters.querySelectorAll('input[type = checkbox]:checked');
 
     var FilterRules = {
-      'houseType': 'type',
-      'quantityRooms': 'rooms',
-      'quantityGuests': 'guests'
+      'housing-type': 'type',
+      'housing-rooms': 'rooms',
+      'housing-guests': 'guests'
     };
 
     var filterValue = function (element, property) {
@@ -27,7 +27,6 @@
     // фильтрация по цене
     var filterPrice = function () {
       return selectedPins.filter(function (newData) {
-
         var filterPriceValues = {
           'low': newData.offer.price <= constants.FILTER_PRICE_MIN,
           'middle': newData.offer.price >= constants.FILTER_PRICE_MIN && newData.offer.price <= constants.FILTER.PRICE_MAX,
@@ -63,30 +62,14 @@
     }
 
     if (selectedPins.length) {
-      selectedPins.forEach(function (item) {
-        window.map.renderPin(item);
-      });
+      window.map.renderPinFragment(selectedPins);
     }
   };
 
-  var successHandler = function (data) {
-    var adverts = data;
-    data.forEach(function (item) {
-      window.map.renderPin(item);
-    });
-  };
-
-  // клик на фильтре
-  var onFilterChange = function (adverts) {
-    window.card.deleteCard();
-    window.map.resetPins();
-    window.utils.debounce(updateData(adverts));
-  };
-
-  filters.addEventListener('change', onFilterChange);
-
   window.filter = {
-    successHandler: successHandler
+    updatePins: function (adverts) {
+      updatePins(adverts);
+    }
   };
 
 })();
