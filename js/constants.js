@@ -18,6 +18,8 @@
     PIN_COUNT: 5,
     DEBOUNCE_INTERVAL: 300,
     FILTER_PRICE_MIN: 10000,
-    FILTER_PRICE_MAX: 50000
+    FILTER_PRICE_MAX: 50000,
+    FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+    AVATAR_SRC: 'img/muffin-grey.svg'
   };
 })();

@@ -55,7 +55,7 @@
   // отрисовка меток на карте
   var renderPinFragment = function (adverts) {
     var pinFragment = document.createDocumentFragment();
-    adverts.forEach(function (item) {
+    adverts.slice(0, constants.PIN_COUNT).forEach(function (item) {
       pinFragment.appendChild(renderPin(item));
     });
     pinElements.appendChild(pinFragment);

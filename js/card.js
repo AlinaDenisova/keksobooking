@@ -31,8 +31,8 @@
           .querySelector('.popup__photos');
         var photosElement = photosTemplate.cloneNode(true);
         photosElement.querySelector('img').src = photos[i];
-        photosElement.querySelector('img').width = 60;
-        photosElement.querySelector('img').height = 60;
+        photosElement.querySelector('img').width = 40;
+        photosElement.querySelector('img').height = 40;
         photosFragment.appendChild(photosElement);
       }
       return photosFragment;

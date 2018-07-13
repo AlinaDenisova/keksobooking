@@ -43,13 +43,16 @@
   // элемент с текстом ошибки
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 5px auto; text-align: center; background-color: red; border: 2px solid black';
+    node.style = 'z-index: 3; width: 100%; height: 100%; padding-top: 300px; text-align: center; background-color: rgba(0, 0, 0, 0.8)';
     node.style.position = 'fixed';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '20px';
+    node.style.left = '0';
+    node.style.top = '0';
+    node.style.fontSize = '50px';
+    node.style.color = '#ffffff';
+    node.style.fontWeight = '700';
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+    return node;
   };
 
   window.backend = {

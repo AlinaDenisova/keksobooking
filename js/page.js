@@ -41,17 +41,21 @@
     initForm();
     userMap.classList.remove('map--faded');
     window.backend.load(successHandler, window.backend.errorHandler);
+    mainPin.removeEventListener('mouseup', activatePage);
+    filters.reset();
   };
 
-  mainPin.addEventListener('mouseup', function () {
-    activatePage();
-  });
+  var loadPage = function () {
+    mainPin.addEventListener('mouseup', activatePage);
+  };
+
+  loadPage();
 
   mainPin.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, activatePage);
   });
 
-  // клик на фильтре
+  // нажатие на фильтр
   var onFilterChange = function (evt) {
     evt.preventDefault();
     window.card.deleteCard();
@@ -62,7 +66,8 @@
   filters.addEventListener('change', onFilterChange);
 
   window.page = {
-    fillAddress: fillAddress
+    fillAddress: fillAddress,
+    loadPage: loadPage
   };
 
 })();
