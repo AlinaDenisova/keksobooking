@@ -41,7 +41,7 @@
   };
 
   // элемент с текстом ошибки
-  var errorHandler = function (errorMessage) {
+  var onLoadError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 3; width: 100%; height: 100%; padding-top: 300px; text-align: center; background-color: rgba(0, 0, 0, 0.8)';
     node.style.position = 'fixed';
@@ -58,7 +58,7 @@
   window.backend = {
     load: load,
     save: save,
-    errorHandler: errorHandler
+    onLoadError: onLoadError
   };
 
 })();

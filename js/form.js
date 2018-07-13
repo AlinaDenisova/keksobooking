@@ -113,7 +113,7 @@
 
   // показать/скрыть сообщение об ошибке загрузки
   var showErrorMessage = function (errorMessage) {
-    var node = window.backend.errorHandler(errorMessage);
+    var node = window.backend.onLoadError(errorMessage);
     var onErrorClick = function () {
       node.remove();
       document.removeEventListener('click', onErrorClick);

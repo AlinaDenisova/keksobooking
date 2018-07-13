@@ -31,7 +31,7 @@
     });
   };
 
-  var successHandler = function (adverts) {
+  var onLoadSuccess = function (adverts) {
     window.map.renderPinFragment(adverts);
   };
 
@@ -40,7 +40,7 @@
     fillAddress();
     initForm();
     userMap.classList.remove('map--faded');
-    window.backend.load(successHandler, window.backend.errorHandler);
+    window.backend.load(onLoadSuccess, window.backend.onLoadError);
     mainPin.removeEventListener('mouseup', activatePage);
     filters.reset();
   };
