@@ -97,7 +97,7 @@
     window.utils.isEnterEvent(evt, validityInput);
   });
 
-  // показать/скрыть сообщение успешной отправки формы
+  // показать/скрыть сообщение успешной отправке формы
   var showSuccessMessage = function () {
     successMessage.classList.remove('hidden');
     successMessage.addEventListener('click', closeSuccesMessage);
@@ -148,6 +148,7 @@
     }
   };
 
+  // деактивация страницы
   var deactivatePage = function () {
     form.classList.add('ad-form--disabled');
     userMap.classList.add('map--faded');
@@ -158,6 +159,8 @@
     window.card.deleteCard();
     window.map.resetPins();
     window.page.loadPage();
+    window.images.deleteImageListeners();
+    window.images.deleteImages();
   };
 
   resetButton.addEventListener('click', deactivatePage);

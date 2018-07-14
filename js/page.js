@@ -43,6 +43,7 @@
     window.backend.load(onLoadSuccess, window.backend.onLoadError);
     mainPin.removeEventListener('mouseup', activatePage);
     filters.reset();
+    window.images.addImageListeners();
   };
 
   var loadPage = function () {
