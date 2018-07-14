@@ -7,6 +7,7 @@
   var form = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('fieldset');
   var address = document.querySelector('input[name="address"]');
+  var filters = document.querySelector('.map__filters');
 
   // заполнение поля адреса
   var fillAddress = function () {
@@ -30,24 +31,43 @@
     });
   };
 
+  var onLoadSuccess = function (adverts) {
+    window.map.renderPinFragment(adverts);
+  };
+
   // активация страницы
   var activatePage = function () {
     fillAddress();
     initForm();
     userMap.classList.remove('map--faded');
-    window.backend.load(window.map.renderPinFragment, window.backend.errorHandler);
+    window.backend.load(onLoadSuccess, window.backend.onLoadError);
+    mainPin.removeEventListener('mouseup', activatePage);
+    filters.reset();
   };
 
-  mainPin.addEventListener('mouseup', function () {
-    activatePage();
-  });
+  var loadPage = function () {
+    mainPin.addEventListener('mouseup', activatePage);
+  };
+
+  loadPage();
 
   mainPin.addEventListener('keydown', function (evt) {
     window.utils.isEnterEvent(evt, activatePage);
   });
 
+  // нажатие на фильтр
+  var onFilterChange = function (evt) {
+    evt.preventDefault();
+    window.card.deleteCard();
+    window.map.resetPins();
+    window.utils.debounce(window.filter.updatePins(window.advertsData));
+  };
+
+  filters.addEventListener('change', onFilterChange);
+
   window.page = {
-    fillAddress: fillAddress
+    fillAddress: fillAddress,
+    loadPage: loadPage
   };
 
 })();

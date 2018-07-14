@@ -3,20 +3,23 @@
 (function () {
 
 // валидация формы
-  var title = document.querySelector('#title');
-  var houseType = document.querySelector('#type');
-  var price = document.querySelector('#price');
-  var arrivalTime = document.querySelector('#timein');
-  var departureTime = document.querySelector('#timeout');
-  var roomQuantity = document.querySelector('#room_number');
-  var guestsQuantity = document.querySelector('#capacity');
-  var description = document.querySelector('#description');
-  var submitButton = document.querySelector('.ad-form__submit');
-  var resetButton = document.querySelector('.ad-form__reset');
+  var form = document.querySelector('.ad-form');
+  var title = form.querySelector('#title');
+  var houseType = form.querySelector('#type');
+  var price = form.querySelector('#price');
+  var arrivalTime = form.querySelector('#timein');
+  var departureTime = form.querySelector('#timeout');
+  var roomQuantity = form.querySelector('#room_number');
+  var guestsQuantity = form.querySelector('#capacity');
+  var description = form.querySelector('#description');
+  var submitButton = form.querySelector('.ad-form__submit');
+  var resetButton = form.querySelector('.ad-form__reset');
   var options = guestsQuantity.querySelectorAll('option');
   var mainPin = document.querySelector('.map__pin--main');
   var inputsValid = [price, title];
-  var form = document.querySelector('.ad-form');
+  var successMessage = document.querySelector('.success');
+  var userMap = document.querySelector('.map');
+  var fieldsets = form.querySelectorAll('fieldset');
 
   var houseTypeMap = {
     'bungalo': {
@@ -94,35 +97,85 @@
     window.utils.isEnterEvent(evt, validityInput);
   });
 
+  // показать/скрыть сообщение успешной отправки формы
+  var showSuccessMessage = function () {
+    successMessage.classList.remove('hidden');
+    successMessage.addEventListener('click', closeSuccesMessage);
+  };
+
+  var closeSuccesMessage = function () {
+    successMessage.classList.add('hidden');
+  };
+
+  document.addEventListener('keydown', function (evt) {
+    window.utils.isEscEvent(evt, closeSuccesMessage);
+  });
+
+  // показать/скрыть сообщение об ошибке загрузки
+  var showErrorMessage = function (errorMessage) {
+    var node = window.backend.onLoadError(errorMessage);
+    var onErrorClick = function () {
+      node.remove();
+      document.removeEventListener('click', onErrorClick);
+      document.removeEventListener('keydown', onErrorEscPress);
+    };
+
+    var onErrorEscPress = function (evt) {
+      window.utils.isEscEvent(evt, onErrorClick);
+    };
+
+    document.addEventListener('click', onErrorClick);
+    document.addEventListener('keydown', onErrorEscPress);
+  };
+
   // сброс формы
   var resetForm = function () {
     setTimeout(function () {
-      title.value = null;
-      description.value = null;
-      price.placeholder = 0;
-      price.min = 0;
-      guestsQuantity.value = '1';
       window.page.fillAddress();
-      mainPin.style = 'left: 570px; top: 375px';
-      onCapacityChange();
-      for (var i = 0; i < inputsValid.length; i++) {
-        if (inputsValid[i].classList.contains('invalid-field')) {
-          inputsValid[i].classList.remove('invalid-field');
-        }
+    });
+    title.value = null;
+    description.value = null;
+    price.placeholder = 0;
+    price.value = null;
+    price.min = 0;
+    guestsQuantity.value = '1';
+    mainPin.style = 'left: 570px; top: 375px';
+    onCapacityChange();
+    for (var i = 0; i < inputsValid.length; i++) {
+      if (inputsValid[i].classList.contains('invalid-field')) {
+        inputsValid[i].classList.remove('invalid-field');
       }
-    }, 0);
+    }
   };
 
-  resetButton.addEventListener('click', function () {
+  var deactivatePage = function () {
+    form.classList.add('ad-form--disabled');
+    userMap.classList.add('map--faded');
+    fieldsets.forEach(function (item) {
+      item.setAttribute('disabled', 'disabled');
+    });
     resetForm();
-  });
+    window.card.deleteCard();
+    window.map.resetPins();
+    window.page.loadPage();
+  };
+
+  resetButton.addEventListener('click', deactivatePage);
 
   resetButton.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, resetForm);
+    window.utils.isEnterEvent(evt, deactivatePage);
   });
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), resetForm, window.backend.errorHandler);
+    window.backend.save(new FormData(form), function () {
+      deactivatePage();
+      showSuccessMessage();
+    }, showErrorMessage);
     evt.preventDefault();
   });
+
+  window.form = {
+    resetForm: resetForm,
+    showErrorMessage: showErrorMessage
+  };
 })();
