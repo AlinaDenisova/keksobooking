@@ -28,8 +28,8 @@
     var pinAvatar = document.createElement('img');
     pinAvatar.src = card.author.avatar;
     pinAvatar.alt = card.offer.title;
-    pinAvatar.width = 40;
-    pinAvatar.height = 40;
+    pinAvatar.width = constants.AVATAR_SIZE;
+    pinAvatar.height = constants.AVATAR_SIZE;
     pinElement.appendChild(pinAvatar);
 
     pinElement.addEventListener('click', function () {
@@ -61,11 +61,12 @@
     pinElements.appendChild(pinFragment);
   };
 
+  // удаление пинов
   var resetPins = function () {
     var existingPinElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < existingPinElements.length; i++) {
-      pinElements.removeChild(existingPinElements[i]);
-    }
+    existingPinElements.forEach(function (item) {
+      pinElements.removeChild(item);
+    });
   };
 
   // получение координат главного пина

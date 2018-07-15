@@ -15,26 +15,26 @@
 
     var renderFeatures = function (features) {
       var featuresFragment = document.createDocumentFragment();
-      for (var i = 0; i < features.length; i++) {
+      features.forEach(function (item) {
         var featuresElement = document.createElement('li');
-        featuresElement.className = 'popup__feature popup__feature--' + features[i];
+        featuresElement.className = 'popup__feature popup__feature--' + item;
         featuresFragment.appendChild(featuresElement);
-      }
+      });
       return featuresFragment;
     };
 
     var renderPhotos = function (photos) {
       var photosFragment = document.createDocumentFragment();
-      for (var i = 0; i < photos.length; i++) {
+      photos.forEach(function (item) {
         var photosTemplate = document.querySelector('template')
           .content
           .querySelector('.popup__photos');
         var photosElement = photosTemplate.cloneNode(true);
-        photosElement.querySelector('img').src = photos[i];
-        photosElement.querySelector('img').width = 40;
-        photosElement.querySelector('img').height = 40;
+        photosElement.querySelector('img').src = item;
+        photosElement.querySelector('img').width = window.constants.PHOTO_SIZE;
+        photosElement.querySelector('img').height = window.constants.PHOTO_SIZE;
         photosFragment.appendChild(photosElement);
-      }
+      });
       return photosFragment;
     };
 

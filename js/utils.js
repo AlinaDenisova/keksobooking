@@ -8,7 +8,6 @@
     if (evt.keyCode === constants.ESC_KEYCODE) {
       action();
     }
-    return action;
   };
 
   // событие нажатия клавиши ENTER
@@ -16,7 +15,6 @@
     if (evt.keyCode === constants.ENTER_KEYCODE) {
       action();
     }
-    return action;
   };
 
   // рандомный элемент массива
