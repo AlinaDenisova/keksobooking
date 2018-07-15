@@ -19,7 +19,7 @@
         var featuresElement = document.createElement('li');
         featuresElement.className = 'popup__feature popup__feature--' + item;
         featuresFragment.appendChild(featuresElement);
-      })
+      });
       return featuresFragment;
     };
 
@@ -34,7 +34,7 @@
         photosElement.querySelector('img').width = window.constants.PHOTO_SIZE;
         photosElement.querySelector('img').height = window.constants.PHOTO_SIZE;
         photosFragment.appendChild(photosElement);
-      })
+      });
       return photosFragment;
     };
 

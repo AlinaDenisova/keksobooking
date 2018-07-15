@@ -77,7 +77,7 @@
       } else {
         item.classList.remove('invalid-field');
       }
-    })
+    });
   };
 
   houseType.addEventListener('input', setMinPrice);
@@ -146,7 +146,7 @@
       if (item.classList.contains('invalid-field')) {
         item.classList.remove('invalid-field');
       }
-    })
+    });
   };
 
   // деактивация страницы
