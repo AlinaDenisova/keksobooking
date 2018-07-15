@@ -3,6 +3,7 @@
 (function () {
 
 // валидация формы
+  var utils = window.utils;
   var form = document.querySelector('.ad-form');
   var title = form.querySelector('#title');
   var houseType = form.querySelector('#type');
@@ -94,7 +95,7 @@
   });
 
   submitButton.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, checkValidityInput);
+    utils.isEnterEvent(evt, checkValidityInput);
   });
 
   // показать/скрыть сообщение успешной отправке формы
@@ -108,7 +109,7 @@
   };
 
   document.addEventListener('keydown', function (evt) {
-    window.utils.isEscEvent(evt, closeSuccesMessage);
+    utils.isEscEvent(evt, closeSuccesMessage);
   });
 
   // показать/скрыть сообщение об ошибке загрузки
@@ -121,7 +122,7 @@
     };
 
     var onErrorEscPress = function (evt) {
-      window.utils.isEscEvent(evt, onErrorClick);
+      utils.isEscEvent(evt, onErrorClick);
     };
 
     document.addEventListener('click', onErrorClick);
@@ -167,7 +168,7 @@
   resetButton.addEventListener('click', deactivatePage);
 
   resetButton.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, deactivatePage);
+    utils.isEnterEvent(evt, deactivatePage);
   });
 
   form.addEventListener('submit', function (evt) {
