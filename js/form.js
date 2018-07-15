@@ -16,7 +16,7 @@
   var resetButton = form.querySelector('.ad-form__reset');
   var options = guestsQuantity.querySelectorAll('option');
   var mainPin = document.querySelector('.map__pin--main');
-  var inputsValid = [price, title];
+  var inputsData = [price, title];
   var successMessage = document.querySelector('.success');
   var userMap = document.querySelector('.map');
   var fieldsets = form.querySelectorAll('fieldset');
@@ -48,7 +48,7 @@
   };
 
   // соответсвие значения поля цены полю жилья
-  var onMinPrice = function () {
+  var setMinPrice = function () {
     price.min = houseTypeMap[houseType.value].MIN_VALUE;
     price.placeholder = houseTypeMap[houseType.value].PLACEHOLDER;
   };
@@ -59,7 +59,7 @@
   };
 
   // соответсвие значения поля количества гостей полю количества комнат
-  var onCapacityChange = function () {
+  var setCapacityChange = function () {
     options.forEach(function (element) {
       element.disabled = !roomQuantityMap[roomQuantity.value].includes(element.value);
     });
@@ -67,38 +67,38 @@
   };
 
   // проверка на валидность поля
-  var validityInput = function () {
-    for (var i = 0; i < inputsValid.length; i++) {
-      var validity = inputsValid[i].validity.valid;
+  var checkValidityInput = function () {
+    inputsData.forEach(function (item) {
+      var validity = item.validity.valid;
       if (!validity) {
-        inputsValid[i].classList.remove('invalid-field');
-        inputsValid.offsetWidth = inputsValid[i].offsetWidth;
-        inputsValid[i].classList.add('invalid-field');
+        item.classList.remove('invalid-field');
+        inputsData.offsetWidth = item.offsetWidth;
+        item.classList.add('invalid-field');
       } else {
-        inputsValid[i].classList.remove('invalid-field');
+        item.classList.remove('invalid-field');
       }
-    }
+    })
   };
 
-  houseType.addEventListener('input', onMinPrice);
+  houseType.addEventListener('input', setMinPrice);
   arrivalTime.addEventListener('input', function (evt) {
     setTime(departureTime, evt.target.value);
   });
   departureTime.addEventListener('input', function (evt) {
     setTime(arrivalTime, evt.target.value);
   });
-  roomQuantity.addEventListener('input', onCapacityChange);
+  roomQuantity.addEventListener('input', setCapacityChange);
 
   submitButton.addEventListener('click', function () {
-    validityInput();
+    checkValidityInput();
   });
 
   submitButton.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, validityInput);
+    window.utils.isEnterEvent(evt, checkValidityInput);
   });
 
   // показать/скрыть сообщение успешной отправке формы
-  var showSuccessMessage = function () {
+  var toggleSuccessMessage = function () {
     successMessage.classList.remove('hidden');
     successMessage.addEventListener('click', closeSuccesMessage);
   };
@@ -112,7 +112,7 @@
   });
 
   // показать/скрыть сообщение об ошибке загрузки
-  var showErrorMessage = function (errorMessage) {
+  var toggleErrorMessage = function (errorMessage) {
     var node = window.backend.onLoadError(errorMessage);
     var onErrorClick = function () {
       node.remove();
@@ -139,13 +139,14 @@
     price.value = null;
     price.min = 0;
     guestsQuantity.value = '1';
-    mainPin.style = 'left: 570px; top: 375px';
-    onCapacityChange();
-    for (var i = 0; i < inputsValid.length; i++) {
-      if (inputsValid[i].classList.contains('invalid-field')) {
-        inputsValid[i].classList.remove('invalid-field');
+    mainPin.style.left = window.constants.MAIN_PIN_LEFT;
+    mainPin.style.top = window.constants.MAIN_PIN_TOP;
+    setCapacityChange();
+    inputsData.forEach(function (item) {
+      if (item.classList.contains('invalid-field')) {
+        item.classList.remove('invalid-field');
       }
-    }
+    })
   };
 
   // деактивация страницы
@@ -172,13 +173,13 @@
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
       deactivatePage();
-      showSuccessMessage();
-    }, showErrorMessage);
+      toggleSuccessMessage();
+    }, toggleErrorMessage);
     evt.preventDefault();
   });
 
   window.form = {
     resetForm: resetForm,
-    showErrorMessage: showErrorMessage
+    toggleErrorMessage: toggleErrorMessage
   };
 })();

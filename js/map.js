@@ -63,9 +63,9 @@
 
   var resetPins = function () {
     var existingPinElements = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < existingPinElements.length; i++) {
-      pinElements.removeChild(existingPinElements[i]);
-    }
+    existingPinElements.forEach(function (item) {
+      pinElements.removeChild(item);
+    })
   };
 
   // получение координат главного пина
