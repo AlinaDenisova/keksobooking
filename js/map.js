@@ -15,7 +15,7 @@
 
   // удаление у пинов активного класса
   var deactivatePin = function () {
-    if (pinActive !== null) {
+    if (pinActive) {
       pinActive.classList.remove('map__pin--active');
     }
   };

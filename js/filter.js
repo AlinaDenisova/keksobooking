@@ -9,7 +9,7 @@
 
     var selectedPins = adverts.slice();
 
-    var select = filters.querySelectorAll('select');
+    var selects = filters.querySelectorAll('select');
     var features = filters.querySelectorAll('input[type = checkbox]:checked');
 
     var FilterRules = {
@@ -43,8 +43,8 @@
       });
     };
 
-    if (select.length !== null) {
-      select.forEach(function (item) {
+    if (selects.length !== null) {
+      selects.forEach(function (item) {
         if (item.value !== 'any') {
           if (item.id !== 'housing-price') {
             selectedPins = filterByValue(item, FilterRules[item.id]);

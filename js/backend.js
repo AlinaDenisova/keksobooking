@@ -22,7 +22,7 @@
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
-    xhr.timeout = 100000;
+    xhr.timeout = window.constants.TIMEOUT;
     return xhr;
   };
 

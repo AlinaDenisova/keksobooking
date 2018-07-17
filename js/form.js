@@ -37,6 +37,7 @@
     },
     'palace': {
       MIN_VALUE: '10000',
+      MAX_VALUE: '1000000',
       PLACEHOLDER: '10 000'
     }
   };
@@ -49,8 +50,9 @@
   };
 
   // соответсвие значения поля цены полю жилья
-  var setMinPrice = function () {
+  var setPrice = function () {
     price.min = houseTypeMap[houseType.value].MIN_VALUE;
+    price.max = houseTypeMap[houseType.value].MAX_VALUE;
     price.placeholder = houseTypeMap[houseType.value].PLACEHOLDER;
   };
 
@@ -81,7 +83,7 @@
     });
   };
 
-  houseType.addEventListener('input', setMinPrice);
+  houseType.addEventListener('input', setPrice);
   arrivalTime.addEventListener('input', function (evt) {
     setTime(departureTime, evt.target.value);
   });
@@ -140,8 +142,8 @@
     price.value = null;
     price.min = 0;
     guestsQuantity.value = '1';
-    mainPin.style.left = window.constants.MAIN_PIN_LEFT;
-    mainPin.style.top = window.constants.MAIN_PIN_TOP;
+    mainPin.style.left = window.constants.MAIN_PIN_LEFT + 'px';
+    mainPin.style.top = window.constants.MAIN_PIN_TOP + 'px';
     setCapacityChange();
     inputsData.forEach(function (item) {
       if (item.classList.contains('invalid-field')) {

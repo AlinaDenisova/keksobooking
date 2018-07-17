@@ -27,23 +27,23 @@
         y: moveEvt.clientY
       };
 
-      var minDistanceTopPin = constants.LOCATION_MIN_Y - constants.MAIN_PIN_HEIGHT;
-      var maxDistanceTopPin = constants.LOCATION_MAX_Y - constants.MAIN_PIN_HEIGHT;
-      var top = mainPin.offsetTop - shift.y;
-      var left = mainPin.offsetLeft - shift.x;
+      var mainPinX = mainPin.offsetLeft - shift.x;
+      var mainPinY = mainPin.offsetTop - shift.y;
 
-      if (top <= (minDistanceTopPin)) {
-        mainPin.style.top = minDistanceTopPin + 'px';
-        mainPin.style.left = left + 'px';
-        startCoords.y = minDistanceTopPin;
-      } else if (top >= maxDistanceTopPin) {
-        mainPin.style.top = maxDistanceTopPin + 'px';
-        mainPin.style.left = left + 'px';
-        startCoords.y = maxDistanceTopPin;
-      } else {
-        mainPin.style.top = top + 'px';
-        mainPin.style.left = left + 'px';
+      if (mainPinY > constants.LOCATION_MAX_Y - constants.MAIN_PIN_HEIGHT) {
+        mainPinY = constants.LOCATION_MAX_Y - constants.MAIN_PIN_HEIGHT;
+      } else if (mainPinY < constants.LOCATION_MIN_Y) {
+        mainPinY = constants.LOCATION_MIN_Y;
       }
+
+      if (mainPinX > userMap.offsetWidth - constants.MAIN_PIN_WIDTH) {
+        mainPinX = userMap.offsetWidth - constants.MAIN_PIN_WIDTH;
+      } else if (mainPinX < 0) {
+        mainPinX = 0;
+      }
+
+      mainPin.style.top = mainPinY + 'px';
+      mainPin.style.left = mainPinX + 'px';
       window.page.fillAddress();
     };
 
