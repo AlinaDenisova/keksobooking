@@ -13,31 +13,6 @@
       palace: 'Дворец'
     };
 
-    var renderFeatures = function (features) {
-      var featuresFragment = document.createDocumentFragment();
-      features.forEach(function (item) {
-        var featuresElement = document.createElement('li');
-        featuresElement.className = 'popup__feature popup__feature--' + item;
-        featuresFragment.appendChild(featuresElement);
-      });
-      return featuresFragment;
-    };
-
-    var renderPhotos = function (photos) {
-      var photosFragment = document.createDocumentFragment();
-      photos.forEach(function (item) {
-        var photosTemplate = document.querySelector('template')
-          .content
-          .querySelector('.popup__photos');
-        var photosElement = photosTemplate.cloneNode(true);
-        photosElement.querySelector('img').src = item;
-        photosElement.querySelector('img').width = window.constants.PHOTO_SIZE;
-        photosElement.querySelector('img').height = window.constants.PHOTO_SIZE;
-        photosFragment.appendChild(photosElement);
-      });
-      return photosFragment;
-    };
-
     var cardTemplate = document.querySelector('template')
       .content
       .querySelector('.map__card');
@@ -50,10 +25,14 @@
     cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
     cardElement.querySelector('.popup__features').textContent = '';
-    cardElement.querySelector('.popup__features').appendChild(renderFeatures(card.offer.features));
+    card.offer.features.forEach(function (item) {
+      cardElement.querySelector('.popup__features').insertAdjacentHTML('beforeend', '<li class="popup__feature popup__feature--' + item + '"></li>');
+    });
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     cardElement.querySelector('.popup__photos').textContent = '';
-    cardElement.querySelector('.popup__photos').appendChild(renderPhotos(card.offer.photos));
+    card.offer.photos.forEach(function (item) {
+      cardElement.querySelector('.popup__photos').insertAdjacentHTML('beforeend', '<img src="' + item + '" class="popup__photo" width="40" height="40" alt="Фотография жилья">');
+    });
 
     userMap.insertBefore(cardElement, document.querySelector('.map__filters-container'));
   };
