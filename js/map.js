@@ -9,8 +9,10 @@
   var pinActive = document.querySelector('.map__pin--active');
 
   // добавление пинам активного класса
-  var activatePin = function (pin) {
-    pin.classList.add('.map__pin--active');
+  var activatePin = function (element) {
+    deactivatePin();
+    pinActive = element;
+    pinActive.classList.add('map__pin--active');
   };
 
   // удаление у пинов активного класса
