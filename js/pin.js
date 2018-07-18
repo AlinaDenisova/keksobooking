@@ -49,11 +49,11 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      userMap.removeEventListener('mousemove', onMouseMove);
-      userMap.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
-    userMap.addEventListener('mousemove', onMouseMove);
-    userMap.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 
 })();

@@ -64,7 +64,7 @@
     window.utils.debounce(window.filter.updatePins(window.advertsData));
   };
 
-  filters.addEventListener('change', onFilterChange);
+  filters.addEventListener('change', window.utils.debounce(onFilterChange));
 
   window.page = {
     fillAddress: fillAddress,
