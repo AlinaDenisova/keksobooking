@@ -5,7 +5,6 @@
   var constants = window.constants;
   var pinElements = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
-  var userMap = document.querySelector('.map');
   var pinActive = document.querySelector('.map__pin--active');
 
   // добавление пинам активного класса
@@ -35,20 +34,8 @@
     pinElement.appendChild(pinAvatar);
 
     pinElement.addEventListener('click', function () {
-      var mapCard = document.querySelector('.map__card');
-
-      if (mapCard) {
-        mapCard.remove();
-        deactivatePin();
-      }
-
+      window.card.showCard(card);
       activatePin(pinElement);
-      window.card.renderCard(card);
-
-      var popupCloseButton = userMap.querySelector('.popup__close');
-      popupCloseButton.addEventListener('click', function () {
-        window.card.deleteCard();
-      });
     });
 
     return pinElement;
