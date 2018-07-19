@@ -62,8 +62,8 @@
   });
 
   window.card = {
-    deleteCard: deleteCard,
-    showCard: showCard
+    delete: deleteCard,
+    show: showCard
   };
 
 })();

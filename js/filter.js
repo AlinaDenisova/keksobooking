@@ -5,7 +5,7 @@
   var constants = window.constants;
   var filters = document.querySelector('.map__filters');
 
-  var updatePins = function (adverts) {
+  window.updatePins = function (adverts) {
 
     var selectedPins = adverts.slice();
 
@@ -63,12 +63,6 @@
 
     if (selectedPins.length) {
       window.map.renderPinFragment(selectedPins);
-    }
-  };
-
-  window.filter = {
-    updatePins: function (adverts) {
-      updatePins(adverts);
     }
   };
 

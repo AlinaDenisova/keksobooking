@@ -43,8 +43,10 @@
   // загрузка фото жилья
   var loadHousePhoto = function (value) {
     housePhotoPreview.classList.remove('ad-form__photo--main');
+    housePhotoPreview.classList.add('hidden');
     var housePhotoPreviewNode = housePhotoPreview.cloneNode(true);
     housePhotoPreviewNode.insertAdjacentHTML('beforeend', '<img src="' + value + '" width="70" height="70" alt="Фотография жилья">');
+    housePhotoPreviewNode.classList.remove('hidden');
     housePhotoContainer.appendChild(housePhotoPreviewNode);
   };
 
@@ -91,6 +93,7 @@
   // удаление файлов
   var deleteImages = function () {
     housePhotoPreview.classList.add('ad-form__photo--main');
+    housePhotoPreview.classList.remove('hidden');
     avatarPreview.src = constants.AVATAR_SRC;
     var housePhotos = housePhotoContainer.querySelectorAll('.ad-form__photo:not(.ad-form__photo--main)');
     housePhotos.forEach(function (item) {
@@ -101,7 +104,7 @@
   window.images = {
     addImageListeners: addImageListeners,
     deleteImageListeners: deleteImageListeners,
-    deleteImages: deleteImages
+    delete: deleteImages
   };
 
 })();

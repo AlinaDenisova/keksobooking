@@ -160,11 +160,11 @@
       item.setAttribute('disabled', 'disabled');
     });
     resetForm();
-    window.card.deleteCard();
+    window.card.delete();
     window.map.resetPins();
-    window.page.loadPage();
+    window.page.load();
     window.images.deleteImageListeners();
-    window.images.deleteImages();
+    window.images.delete();
   };
 
   resetButton.addEventListener('click', deactivatePage);
@@ -181,8 +181,4 @@
     evt.preventDefault();
   });
 
-  window.form = {
-    resetForm: resetForm,
-    toggleErrorMessage: toggleErrorMessage
-  };
 })();

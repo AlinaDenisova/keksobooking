@@ -34,7 +34,7 @@
     pinElement.appendChild(pinAvatar);
 
     pinElement.addEventListener('click', function () {
-      window.card.showCard(card);
+      window.card.show(card);
       activatePin(pinElement);
     });
 

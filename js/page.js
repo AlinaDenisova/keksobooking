@@ -59,16 +59,16 @@
   // нажатие на фильтр
   var onFilterChange = function (evt) {
     evt.preventDefault();
-    window.card.deleteCard();
+    window.card.delete();
     window.map.resetPins();
-    window.utils.debounce(window.filter.updatePins(window.advertsData));
+    window.utils.debounce(window.updatePins(window.advertsData));
   };
 
   filters.addEventListener('change', window.utils.debounce(onFilterChange));
 
   window.page = {
     fillAddress: fillAddress,
-    loadPage: loadPage
+    load: loadPage
   };
 
 })();

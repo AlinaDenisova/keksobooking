@@ -26,4 +26,5 @@
     FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
     AVATAR_SRC: 'img/muffin-grey.svg'
   };
+
 })();
