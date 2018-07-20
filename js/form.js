@@ -153,7 +153,7 @@
   };
 
   // деактивация страницы
-  var deactivatePage = function () {
+  var onFormButtonClick = function () {
     form.classList.add('ad-form--disabled');
     userMap.classList.add('map--faded');
     fieldsets.forEach(function (item) {
@@ -167,15 +167,15 @@
     window.images.delete();
   };
 
-  resetButton.addEventListener('click', deactivatePage);
+  resetButton.addEventListener('click', onFormButtonClick);
 
   resetButton.addEventListener('keydown', function (evt) {
-    utils.isEnterEvent(evt, deactivatePage);
+    utils.isEnterEvent(evt, onFormButtonClick);
   });
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), function () {
-      deactivatePage();
+      onFormButtonClick();
       toggleSuccessMessage();
     }, toggleErrorMessage);
     evt.preventDefault();
