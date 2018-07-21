@@ -36,24 +36,24 @@
   };
 
   // активация страницы
-  var onMainPinMouseUp = function () {
+  var onMainPinMouseDown = function () {
     fillAddress();
     initForm();
     userMap.classList.remove('map--faded');
     window.backend.load(onLoadSuccess, window.backend.onLoadError);
-    mainPin.removeEventListener('mouseup', onMainPinMouseUp);
+    mainPin.removeEventListener('mousedown', onMainPinMouseDown);
     filters.reset();
     window.images.addImageListeners();
   };
 
   var loadPage = function () {
-    mainPin.addEventListener('mouseup', onMainPinMouseUp);
+    mainPin.addEventListener('mousedown', onMainPinMouseDown);
   };
 
   loadPage();
 
   mainPin.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, onMainPinMouseUp);
+    window.utils.isEnterEvent(evt, onMainPinMouseDown);
   });
 
   // нажатие на фильтр
