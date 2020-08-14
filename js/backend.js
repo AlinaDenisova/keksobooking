@@ -2,7 +2,7 @@
 
 // загрузка похожих объявлений с сервера
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking';
+  var URL = 'https://javascript.pages.academy/keksobooking';
 
   // обработка ошибок
   var setup = function (onLoad, onError) {
